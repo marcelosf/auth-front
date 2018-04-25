@@ -1,4 +1,4 @@
-# intranet
+# Auth Module Front End
 
 > A Vue.js project
 
