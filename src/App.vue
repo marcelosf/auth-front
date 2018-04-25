@@ -10,22 +10,6 @@
 
       <v-list>
 
-        <v-list-tile ripple :to="{ name: 'home'}"  v-model="activeItem">
-
-          <v-list-tile-action>
-
-            <v-icon>home</v-icon>
-
-          </v-list-tile-action>
-
-          <v-list-tile-content>
-
-            <v-list-tile-title>Home</v-list-tile-title>
-
-          </v-list-tile-content>
-
-        </v-list-tile>
-
         <v-divider></v-divider>
 
         <v-list-tile ripple v-model="activeItem" v-for="item in items" :key="item.id" :to="{ name: item.link }">
@@ -113,7 +97,7 @@
 
         right: true,
 
-        title: 'Infra IAG'
+        title: 'Contas IAG'
 
       }
 

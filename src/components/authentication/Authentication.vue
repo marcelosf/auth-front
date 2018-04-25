@@ -20,9 +20,21 @@
 
                             <v-form>
 
-                                <v-text-field prepend-icon="person" name="login" label="Login" type="text"></v-text-field>
+                                <v-text-field
+                                        prepend-icon="person"
+                                        name="code"
+                                        label="Nº Usp"
+                                        type="text"
+                                        v-model="credentials.code"
+                                ></v-text-field>
 
-                                <v-text-field prepend-icon="lock" name="password" label="Password" type="password"></v-text-field>
+                                <v-text-field
+                                        prepend-icon="lock"
+                                        name="password"
+                                        label="Password"
+                                        type="password"
+                                        v-model="credentials.password"
+                                ></v-text-field>
 
                             </v-form>
 
@@ -32,7 +44,7 @@
 
                             <v-spacer></v-spacer>
 
-                            <v-btn color="primary">Login</v-btn>
+                            <v-btn color="primary" @click="login()">Login</v-btn>
 
                         </v-card-actions>
 
@@ -49,5 +61,70 @@
 </template>
 
 <script>
+    import {Authentication} from '@/resources/Authentication';
+    import {User} from '@/resources/User';
 
+    export default {
+
+      data () {
+
+        return {
+
+          credentials: {
+
+            code: '',
+
+            password: ''
+
+          }
+
+        }
+
+      },
+
+      methods: {
+
+        login () {
+
+          this._getAuthHandler().login(this.credentials, this._triggerLoginActions, this._triggerLoginError);
+
+        },
+
+        _getAuthHandler () {
+
+          return new Authentication();
+
+        },
+
+        _triggerLoginActions () {
+
+          this._getUserHandler().loadUserData(() => {
+
+            this.$store.state.user.user = this._getUserHandler().getUser();
+
+          }, (error) => {
+
+            this.$emit('error', error.response.message);
+
+          });
+
+        },
+
+        _getUserHandler () {
+
+          return User;
+
+        },
+
+        _triggerLoginError (error) {
+
+          console.log(error);
+
+          this.$emit('error', error.response);
+
+        }
+
+      }
+
+    }
 </script>
