@@ -1,69 +1,53 @@
 <template>
 
-    <v-container grid-list-md>
+    <v-content>
 
-        <v-layout row wrap>
+        <v-container fluid fill-height>
 
-            <v-flex xs12 sm6 md6 offset-sm2 offset-md2>
+            <v-layout align-center justify-center>
 
-                <account-component title="Account" @error="showError"></account-component>
+                <v-flex xs12 sm8 md4>
 
-            </v-flex>
+                    <v-card class="elevation-12">
 
-        </v-layout>
+                        <v-toolbar dark color="primary">
 
-        <v-snackbar :timeout="snackbar.timeout" :bottom="true" v-model="snackbar.toggle">
+                            <v-toolbar-title>Login</v-toolbar-title>
 
-            {{ snackbar.message }}
+                        </v-toolbar>
 
-            <v-btn flat color="pink" @click.native="snackbar.toggle = false">CLOSE</v-btn>
+                        <v-card-text>
 
-        </v-snackbar>
+                            <v-form>
 
-    </v-container>
+                                <v-text-field prepend-icon="person" name="login" label="Login" type="text"></v-text-field>
+
+                                <v-text-field prepend-icon="lock" name="password" label="Password" type="password"></v-text-field>
+
+                            </v-form>
+
+                        </v-card-text>
+
+                        <v-card-actions>
+
+                            <v-spacer></v-spacer>
+
+                            <v-btn color="primary">Login</v-btn>
+
+                        </v-card-actions>
+
+                    </v-card>
+
+                </v-flex>
+
+            </v-layout>
+
+        </v-container>
+
+    </v-content>
 
 </template>
 
 <script>
-    import Account from '../../layouts/Account.vue'
 
-    export default {
-
-      data () {
-
-        return {
-
-          snackbar: {
-
-            toggle: false,
-
-            message: '',
-
-            timeout: parseInt(process.env.SNACKBAR_TIMEOUT)
-
-          }
-
-        }
-
-      },
-
-      methods: {
-
-        showError (message) {
-
-          this.snackbar.message = message;
-
-          this.snackbar.toggle = true;
-
-        }
-
-      },
-
-      components: {
-
-        'account-component': Account
-
-      }
-
-    }
 </script>
