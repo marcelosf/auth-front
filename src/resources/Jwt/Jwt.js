@@ -16,13 +16,13 @@ export class Jwt {
 
   }
 
-  refreshToken () {
+  refreshToken (actions) {
 
     try {
 
       return this.api.post(REFRESH_TOKEN_URL).then((response) => {
 
-        return response;
+        actions(response);
 
       });
 
@@ -49,6 +49,12 @@ export class Jwt {
       return 'An error occurred while trying to invalidate the token. Error: ' + error.message;
 
     }
+
+  }
+
+  setApi (api) {
+
+    this.api = api;
 
   }
 

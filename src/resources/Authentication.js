@@ -2,14 +2,17 @@ import {Jwt} from './Jwt/Jwt.js';
 import {Api} from './Api/Api';
 import {LocalStorage} from './LocalStorage/LocalStorage';
 import {LoginInterceptor} from '@/middleware/LoginInterceptor';
+import {TokenInterceptor} from '@/middleware/TokenInterceptor';
 
 const ACCESS_TOKEN_KEY = 'access_token';
 
 export class Authentication {
 
-  constructor () {
+  constructor (api) {
 
-    this._api = new Api().initialize();
+    this._api = null;
+
+    this._setApi(api);
 
     LoginInterceptor.handleLoginResponse(this._api);
 
@@ -29,9 +32,25 @@ export class Authentication {
 
   }
 
-  renewLogin () {
+  refreshLogin () {
 
-    this.JWT.refreshToken();
+    if (this.check()) {
+
+      this._setAccessToken();
+
+      this._setRequester();
+
+      this.JWT.setApi(this._api);
+
+      return this.JWT.refreshToken((response) => {
+
+        this._storeAccountToken(response);
+
+      });
+
+    }
+
+    return false;
 
   }
 
@@ -58,6 +77,40 @@ export class Authentication {
     LocalStorage.storeValue(ACCESS_TOKEN_KEY, response.data.access_token);
 
     return true;
+
+  }
+
+  _setApi (api) {
+
+    if (api) {
+
+      this._api = api;
+
+      return true;
+
+    }
+
+    this._api = new Api().initialize();
+
+    return true;
+
+  }
+
+  _setAccessToken () {
+
+    this._accessToken = this._getStorageHandler().getValueByKey('access_token');
+
+  }
+
+  _setRequester () {
+
+    this._api = TokenInterceptor.handleBearer(this._api, this._accessToken);
+
+  }
+
+  _getStorageHandler () {
+
+    return LocalStorage;
 
   }
 

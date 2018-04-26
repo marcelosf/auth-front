@@ -1,5 +1,6 @@
 const USER_ROUTE = 'auth/me';
 const STORAGE_USER_KEY = 'user';
+const CHECK_ROUTE = 'auth/check';
 
 import {LocalStorage} from '@/resources/LocalStorage/LocalStorage';
 import {Api} from '@/resources/Api/Api';
@@ -30,6 +31,20 @@ export class User {
       return response.data;
 
     }).catch(error);
+
+  }
+
+  static check (check) {
+
+    this._setUserAccessToken();
+
+    this._setUserRequester();
+
+    this._api.get(CHECK_ROUTE).then((response) => {
+
+      check(response);
+
+    });
 
   }
 
