@@ -56,6 +56,8 @@
 
         </v-container>
 
+        <snack-bar v-model="snack_bar.toggle" :message="snack_bar.message"></snack-bar>
+
     </v-content>
 
 </template>
@@ -63,6 +65,7 @@
 <script>
     import {Authentication} from '@/resources/Authentication';
     import {User} from '@/resources/User';
+    import SnackBar from '@/layouts/SnackBar';
 
     export default {
 
@@ -75,6 +78,14 @@
             code: '',
 
             password: ''
+
+          },
+
+          snack_bar: {
+
+            message: '',
+
+            toggle: false
 
           }
 
@@ -102,6 +113,8 @@
 
             this.$store.state.user.user = this._getUserHandler().getUser();
 
+            this._showMessage('You are logged in.');
+
           }, (error) => {
 
             this.$emit('error', error.response.message);
@@ -122,7 +135,21 @@
 
           this.$emit('error', error.response);
 
+        },
+
+        _showMessage (message) {
+
+          this.snack_bar.message = message;
+
+          this.snack_bar.toggle = true;
+
         }
+
+      },
+
+      components: {
+
+        'snack-bar': SnackBar
 
       }
 

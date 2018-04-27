@@ -67,6 +67,7 @@
 <script>
 
 import {Authentication} from '@/resources/Authentication';
+
 export default {
 
   computed: {
@@ -85,9 +86,9 @@ export default {
 
       this._getAuthHandler().logout((response) => {
 
-        console.log(response);
-
         this.$store.state.user.user = {};
+
+        this._dispatchShowMessageEvent(response.data.message);
 
       });
 
@@ -96,6 +97,12 @@ export default {
     _getAuthHandler () {
 
       return new Authentication();
+
+    },
+
+    _dispatchShowMessageEvent (message) {
+
+      this.$emit('showMessage', message);
 
     }
 

@@ -40,7 +40,7 @@
 
       <v-spacer></v-spacer>
 
-      <account-menu></account-menu>
+      <account-menu @showMessage="showMessage"></account-menu>
 
     </v-toolbar>
 
@@ -51,6 +51,8 @@
         <router-view></router-view>
 
       </transition>
+
+      <snack-bar v-model="snack_bar.toggle" :message="snack_bar.message"></snack-bar>
 
     </v-content>
 
@@ -76,6 +78,7 @@
 
 <script>
   import AccountMenu from '@/layouts/AccountMenu.vue';
+  import SnackBar from '@/layouts/SnackBar';
 
   export default {
 
@@ -97,7 +100,29 @@
 
         right: true,
 
-        title: 'Contas IAG'
+        title: 'Contas IAG',
+
+        snack_bar: {
+
+          message: '',
+
+          toggle: false
+
+        }
+
+      }
+
+    },
+
+    methods: {
+
+      showMessage (message) {
+
+        console.log(message);
+
+        this.snack_bar.message = message;
+
+        this.snack_bar.toggle = true;
 
       }
 
@@ -105,7 +130,9 @@
 
     components: {
 
-      'account-menu': AccountMenu
+      'account-menu': AccountMenu,
+
+      'snack-bar': SnackBar
 
     }
   }
