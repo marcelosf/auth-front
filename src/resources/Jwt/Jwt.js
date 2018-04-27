@@ -34,13 +34,13 @@ export class Jwt {
 
   }
 
-  removeToken () {
+  removeToken (actions) {
 
     try {
 
       this.api.post(INVALIDATE_TOKEN_URL).then((response) => {
 
-        return response;
+        actions(response);
 
       });
 

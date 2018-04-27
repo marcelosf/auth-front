@@ -50,7 +50,7 @@
 
                     <v-spacer></v-spacer>
 
-                    <v-btn flat color="primary">Logout</v-btn>
+                    <v-btn flat color="primary" @click="logout">Logout</v-btn>
 
                     <v-btn flat color="primary">Edit</v-btn>
 
@@ -66,6 +66,7 @@
 
 <script>
 
+import {Authentication} from '@/resources/Authentication';
 export default {
 
   computed: {
@@ -73,6 +74,28 @@ export default {
     userMenu () {
 
       return this.$store.state.user.user;
+
+    }
+
+  },
+
+  methods: {
+
+    logout () {
+
+      this._getAuthHandler().logout((response) => {
+
+        console.log(response);
+
+        this.$store.state.user.user = {};
+
+      });
+
+    },
+
+    _getAuthHandler () {
+
+      return new Authentication();
 
     }
 

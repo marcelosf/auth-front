@@ -5,6 +5,7 @@ import {LoginInterceptor} from '@/middleware/LoginInterceptor';
 import {TokenInterceptor} from '@/middleware/TokenInterceptor';
 
 const ACCESS_TOKEN_KEY = 'access_token';
+const USER_KEY = 'user';
 
 export class Authentication {
 
@@ -54,13 +55,19 @@ export class Authentication {
 
   }
 
-  logout () {
+  logout (actions) {
 
     if (this.check()) {
 
-      // TODO Invalidate Token.
+      this.JWT.removeToken((response) => {
 
-      LocalStorage.destroy(ACCESS_TOKEN_KEY);
+        actions(response);
+
+        LocalStorage.destroy(ACCESS_TOKEN_KEY);
+
+        LocalStorage.destroy(USER_KEY);
+
+      });
 
     }
 
