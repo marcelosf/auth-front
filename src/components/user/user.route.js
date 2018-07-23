@@ -1,5 +1,5 @@
 import User from '@/components/user/User'
-import UserEdit from '@/components/user/UserEdit'
+import UserEdit from '@/components/user/User.Edit'
 
 export const UserRouters = [
 

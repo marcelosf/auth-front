@@ -1,14 +1,17 @@
 const USER_ROUTE = 'auth/me';
 const STORAGE_USER_KEY = 'user';
 const CHECK_ROUTE = 'auth/check';
+const USER_UPDATE = 'user/';
 
 import {LocalStorage} from '@/resources/LocalStorage/LocalStorage';
-import {Api} from '@/resources/Api/Api';
 import {TokenInterceptor} from '@/middleware/TokenInterceptor';
+import {Resource} from '@/resources/Resource';
 
 export class User {
 
   static getUser () {
+
+    this.loadUserData(actions => {});
 
     let userData = this._getStorageHandler().getValueByKey(STORAGE_USER_KEY);
 
@@ -48,6 +51,20 @@ export class User {
 
   }
 
+  static update (user, actions, error) {
+
+    this._setUserAccessToken();
+
+    this._setUserRequester();
+
+    this._api.put(USER_UPDATE + user.id, user).then((response) => {
+
+      actions(response);
+
+    }).catch(error);
+
+  }
+
   static clearSession () {
 
     this._getStorageHandler().destroy(STORAGE_USER_KEY);
@@ -62,7 +79,7 @@ export class User {
 
   static _setUserRequester () {
 
-    this._api = TokenInterceptor.handleBearer(this._getApi(), this._accessToken);
+    this._api = TokenInterceptor.handleBearer(this._resourceHandler().getApi(), this._accessToken);
 
   }
 
@@ -78,9 +95,9 @@ export class User {
 
   }
 
-  static _getApi () {
+  static _resourceHandler () {
 
-    return new Api().initialize();
+    return new Resource();
 
   }
 

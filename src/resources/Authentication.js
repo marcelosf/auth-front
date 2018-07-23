@@ -1,5 +1,5 @@
 import {Jwt} from './Jwt/Jwt.js';
-import {Api} from './Api/Api';
+import {Resource} from '@/resources/Resource';
 import {LocalStorage} from './LocalStorage/LocalStorage';
 import {LoginInterceptor} from '@/middleware/LoginInterceptor';
 import {TokenInterceptor} from '@/middleware/TokenInterceptor';
@@ -97,7 +97,7 @@ export class Authentication {
 
     }
 
-    this._api = new Api().initialize();
+    this._api = this._resourceHandler().getApi();
 
     return true;
 
@@ -118,6 +118,12 @@ export class Authentication {
   _getStorageHandler () {
 
     return LocalStorage;
+
+  }
+
+  _resourceHandler () {
+
+    return new Resource();
 
   }
 

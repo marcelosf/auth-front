@@ -10,4 +10,14 @@ export class TokenInterceptor extends Middleware {
 
   }
 
+  static refresh (api, response, error) {
+
+    return super.interceptResponse(api, (response) => {
+
+      console.log(response);
+
+    }, error);
+
+  }
+
 }

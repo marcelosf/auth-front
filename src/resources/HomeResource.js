@@ -10,8 +10,6 @@ export class HomeResource extends Resource {
 
     this._getApi().get(HOME_API + '?page=' + page + (searchParams || '')).then((response) => {
 
-      console.log(searchParams);
-
       actions(response.data.data);
 
     }).catch(errors);

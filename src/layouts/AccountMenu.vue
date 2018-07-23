@@ -52,7 +52,7 @@
 
                     <v-btn flat color="primary" @click="logout">Logout</v-btn>
 
-                    <v-btn flat color="primary">Edit</v-btn>
+                    <v-btn flat color="primary" @click="edit">Edit</v-btn>
 
                 </v-card-actions>
 
@@ -91,6 +91,12 @@ export default {
         this._dispatchShowMessageEvent(response.data.message);
 
       });
+
+    },
+
+    edit () {
+
+      this.$router.push({name: 'user-edit', params: {userId: this.$store.state.user.user.id}})
 
     },
 
