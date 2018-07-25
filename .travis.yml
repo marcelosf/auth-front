@@ -9,4 +9,4 @@ before_script:
 cache: 
   directories:
     - node_modules
-script: node_modules/karma/bin/karma start karma.conf.js — single-run
+script: node_modules/karma/bin/karma start test/unit/karma.conf.js — single-run
