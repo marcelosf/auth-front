@@ -1,4 +1,5 @@
 const ACCESS_TOKEN_KEY = 'access_token';
+const USER_KEY = 'user';
 
 import {Api} from '@/resources/Api/Api';
 import {LocalStorage} from '@/resources/LocalStorage/LocalStorage';
@@ -32,7 +33,7 @@ export class Resource {
 
       }
 
-      if (errors.response.status === 400) {
+      if (this._getErrorCode(errors) === 0) {
 
         this._refreshToken(() => {
 
@@ -42,6 +43,8 @@ export class Resource {
 
       }
 
+      this._loginRedirect(errors);
+
       return Promise.reject(errors);
 
     });
@@ -50,15 +53,19 @@ export class Resource {
 
   }
 
-   _loginRedirect (status) {
+   _loginRedirect (error) {
 
-    if (status === 400) {
+      if (this._getErrorCode(error) !== 0) {
 
-      window.location = '/#/authentication';
+        window.location = '/#/authentication';
 
-    }
+        this._localStorageHandler().destroy(ACCESS_TOKEN_KEY);
 
-  }
+        this._localStorageHandler().destroy(USER_KEY);
+
+      }
+
+   }
 
    _refreshToken (actions) {
 
@@ -83,6 +90,16 @@ export class Resource {
   _apiHandler () {
 
     return new Api().initialize();
+
+  }
+
+  _getErrorCode (error) {
+
+    if (error.response.request.response) {
+
+      return JSON.parse(error.response.request.response).code;
+
+    }
 
   }
 
