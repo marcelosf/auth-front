@@ -1,5 +1,9 @@
 # Auth Module Front End
 
+<p align="center">
+<a href="https://travis-ci.com/marcelosf/auth-front"><img src="https://travis-ci.com/marcelosf/auth-front.svg?branch=master" alt="Build Status"></a>
+</p>
+
 > A Vue.js project
 
 ## Build Setup
