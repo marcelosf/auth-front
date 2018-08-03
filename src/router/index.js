@@ -15,6 +15,16 @@ let registeredRoutes = routes.concat(
 
 )
 
-export default new Router({
+let routerInstance = new Router({
+
   routes: registeredRoutes
+
+});
+
+routerInstance.beforeEach((to, from, next) => {
+
+  next();
+
 })
+
+export default routerInstance;

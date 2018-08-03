@@ -12,9 +12,9 @@ export class Middleware {
 
   }
 
-  static interceptPostHeader (api, headerKey, headerValue) {
+  static interceptHeader (api, headerKey, headerValue) {
 
-    api.defaults.headers.post[headerKey] = headerValue;
+    api.defaults.headers.common[headerKey] = headerValue;
 
     return api;
 

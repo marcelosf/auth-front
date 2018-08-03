@@ -22,6 +22,8 @@ export const UserStates = {
 
     username (state) {
 
+      console.log(state.user);
+
       return state.user.filter(user => user.name);
 
     }

@@ -1,10 +1,16 @@
 <template>
 
     <div>
+            
+         {{ userMenu ? userMenu.name : ''}}
 
-        {{ userMenu.name }}
+        <v-btn icon v-if="!userMenu" @click="goToLoginForm">
 
-        <v-menu offset-y offset-x>
+            <v-icon class="white--text">account_circle</v-icon>
+
+        </v-btn>
+
+        <v-menu offset-y offset-x v-if="userMenu">
 
             <v-btn slot="activator" icon>
 
@@ -34,9 +40,9 @@
 
                             <v-list-tile-content>
 
-                                <v-list-tile-title>{{ userMenu.name }}</v-list-tile-title>
+                                <v-list-tile-title>{{ userMenu ? userMenu.name : '' }}</v-list-tile-title>
 
-                                <v-list-tile-sub-title>{{ userMenu.email }}</v-list-tile-sub-title>
+                                <v-list-tile-sub-title>{{ userMenu ? userMenu.email : ''}}</v-list-tile-sub-title>
 
                             </v-list-tile-content>
 
@@ -67,6 +73,7 @@
 <script>
 
 import {Authentication} from '@/resources/Authentication';
+import {User} from '@/resources/User';
 
 export default {
 
@@ -74,13 +81,19 @@ export default {
 
     userMenu () {
 
-      return this.$store.state.user.user;
+      return this.loadUserData();
 
     }
 
   },
 
   methods: {
+
+    goToLoginForm () {
+
+      return this.$router.push({name: 'authentication'});
+
+    },
 
     logout () {
 
@@ -97,6 +110,42 @@ export default {
     edit () {
 
       this.$router.push({name: 'user-edit', params: {userId: this.$store.state.user.user.id}})
+
+    },
+
+    loadUserData () {
+
+        let user = this._getUserFromStore();
+
+        if (!this.$R.isEmpty(user)) {
+
+            return this._getUserFromStore();
+
+        }
+
+        this._userHandler().loadUserData();
+
+        return this._setUserStore(this._userHandler().getUser());
+
+    },
+
+    _userHandler () {
+
+        return User;
+
+    },
+
+    _getUserFromStore () {
+
+        return this.$store.state.user.user;
+
+    },
+
+    _setUserStore (user) {
+
+        this.$store.state.user.user = user;
+
+        return user;
 
     },
 

@@ -29,7 +29,11 @@ export class User {
 
       this._storeUser(JSON.stringify(response.data));
 
-      afterLoadActions();
+      if (afterLoadActions) {
+
+        afterLoadActions();
+
+      }
 
       return response.data;
 

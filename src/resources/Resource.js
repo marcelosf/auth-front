@@ -4,6 +4,7 @@ const USER_KEY = 'user';
 import {Api} from '@/resources/Api/Api';
 import {LocalStorage} from '@/resources/LocalStorage/LocalStorage';
 import {Jwt} from '@/resources/Jwt/Jwt';
+import {LoginInterceptor} from '@/middleware/LoginInterceptor';
 
 export class Resource {
 
@@ -15,15 +16,15 @@ export class Resource {
 
   getApi (actions, errorActions) {
 
-    this.api.interceptors.response.use(response => {
+    let self = this;
+
+    LoginInterceptor.handleLoginResponse(this.api, response => {
 
       if (actions) {
 
         actions(response);
 
       }
-
-      return response;
 
     }, errors => {
 
@@ -33,11 +34,11 @@ export class Resource {
 
       }
 
-      if (this._getErrorCode(errors) === 0) {
+      if (self._getErrorCode(errors) === 0) {
 
-        this._refreshToken(() => {
+        self._refreshToken(() => {
 
-          return this._retryRequest(errors.config);
+          return self._retryRequest(errors.config);
 
         });
 

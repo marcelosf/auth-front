@@ -4,6 +4,7 @@ import Vue from 'vue'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.css'
 import {store} from '@/store/Store';
+import VueRamda from 'vue-ramda';
 
 import App from './App'
 import router from './router'
@@ -22,7 +23,9 @@ Vue.use(Vuetify, {
 
   }
 
-})
+});
+
+Vue.use(VueRamda);
 
 Vue.config.productionTip = false
 

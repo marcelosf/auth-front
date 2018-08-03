@@ -83,6 +83,8 @@
 
             this.$store.state.user.user = this._getUserHandler().getUser();
 
+            this.$store.state.loggedin = true;
+
           }, (error) => {
 
             this.$emit('error', error.response.message);

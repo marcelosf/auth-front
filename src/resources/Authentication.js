@@ -1,11 +1,12 @@
 import {Jwt} from './Jwt/Jwt.js';
 import {Resource} from '@/resources/Resource';
-import {LocalStorage} from './LocalStorage/LocalStorage';
+import {LocalStorage} from './LocalStorage/LocalStorage.js';
 import {LoginInterceptor} from '@/middleware/LoginInterceptor';
 import {TokenInterceptor} from '@/middleware/TokenInterceptor';
 
 const ACCESS_TOKEN_KEY = 'access_token';
 const USER_KEY = 'user';
+const AUTH_CHECK_ROUTE = 'auth/check';
 
 export class Authentication {
 
@@ -76,6 +77,18 @@ export class Authentication {
   check () {
 
     return LocalStorage.getValueByKey(ACCESS_TOKEN_KEY) !== null;
+
+  }
+
+  _check (actions) {
+
+    this._api.get(AUTH_CHECK_ROUTE).then(response => {
+
+      actions(response);
+
+      console.log(response);
+
+    });
 
   }
 
